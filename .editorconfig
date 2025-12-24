@@ -1,0 +1,8 @@
+[*.cs]
+# The magic setting to kill Allman style
+csharp_new_line_before_open_brace = none
+
+# Keep else/catch/finally on the same line as the closing brace
+csharp_new_line_before_else = false
+csharp_new_line_before_catch = false
+csharp_new_line_before_finally = false

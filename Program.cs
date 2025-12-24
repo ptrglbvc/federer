@@ -15,7 +15,13 @@ class Program
     {
         try
         {
-            var server = new Server();
+            var routes = new Dictionary<string, string>{
+                {"/dictator", "/Users/petar/Movies/The Onion/Newsroom/First Female Dictator Hailed As Step Forward For Women.mp4"},
+                { "/butt", "/Users/petar/Downloads/AQOBGN6hPgKKlUFUxjzAj0qat28X1AgjVLrY6E8xzonEjqfWTafbwUiwuEHPjvRMZUcJSUWtJkIzCv8GApQaGumPPgoWSsfHOKk0VZE.mp4"},
+                { "/car", "/Users/petar/Projects/CSS/move-things-with-css-main/src/css-animations/racecar/3.stop-the-race/index.html"}
+        };
+
+            var server = new Server(routes);
             await server.Serve(port);
             Console.WriteLine($"Server started at port {port}");
 
@@ -24,10 +30,10 @@ class Program
 
             // Handle Ctrl+C (SIGINT)
             Console.CancelKeyPress += (sender, eventArgs) =>
-            {
-                eventArgs.Cancel = true; // Prevents immediate termination
-                exitEvent.Set();
-            };
+                    {
+                        eventArgs.Cancel = true; // Prevents immediate termination
+                        exitEvent.Set();
+                    };
 
             // Wait here indefinitely until the event is triggered
             exitEvent.Wait();
