@@ -1,6 +1,6 @@
-# 🎾 Federer
+# Federer
 
-An elegant, small HTTP file server with streaming and range request support.
+An HTTP file server meant primarely for streaming media to devices on the local network. Like the tennis player, it's a server that's efficient for its size. Elegant (as long as you don't read the code). And it will probably choke from time to time.
 
 ## Installation
 
@@ -45,10 +45,10 @@ federer --help
 
 ## Features
 
-- 🚀 Lightweight and fast
-- 📁 Stream large files without loading into memory
-- 📍 Range request support (video seeking, resume downloads)
-- 🎯 Simple route-based configuration
+- Lightweight and fast
+- Stream large files without loading into memory
+- Range request support (video seeking, resume downloads)
+- Simple route-based configuration
 
 ## Examples
 
@@ -60,7 +60,7 @@ federer -p 3000 /movie=/home/user/Movies/movie.mp4
 
 Serve multiple files:
 ```bash
-federer /doc=/path/to/manual.pdf /vid=/path/to/tutorial.mp4
+federer /doc=/path/to/manual.pdf /vid=/path/to/tutorial.mp4 /goat=path/to/djokovic-best-points.mp4
 ```
 
 ## License

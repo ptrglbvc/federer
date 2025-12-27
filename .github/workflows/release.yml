@@ -1,0 +1,61 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+      
+      - name: Restore
+        run: dotnet restore
+      
+      - name: Build
+        run: dotnet build --configuration Release --no-restore
+      
+      - name: Pack NuGet
+        run: dotnet pack --configuration Release --no-build
+      
+      - name: Publish to NuGet
+        run: dotnet nuget push ./nupkg/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+      
+      # Build self-contained executables for each platform
+      - name: Publish Linux x64
+        run: dotnet publish -c Release -r linux-x64 --self-contained -o ./publish/linux-x64
+      
+      - name: Publish macOS x64
+        run: dotnet publish -c Release -r osx-x64 --self-contained -o ./publish/osx-x64
+      
+      - name: Publish macOS ARM64
+        run: dotnet publish -c Release -r osx-arm64 --self-contained -o ./publish/osx-arm64
+      
+      - name: Publish Windows x64
+        run: dotnet publish -c Release -r win-x64 --self-contained -o ./publish/win-x64
+      
+      - name: Zip releases
+        run: |
+          cd publish
+          zip -r ../federer-linux-x64.zip linux-x64
+          zip -r ../federer-osx-x64.zip osx-x64
+          zip -r ../federer-osx-arm64.zip osx-arm64
+          zip -r ../federer-win-x64.zip win-x64
+      
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            federer-linux-x64.zip
+            federer-osx-x64.zip
+            federer-osx-arm64.zip
+            federer-win-x64.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
